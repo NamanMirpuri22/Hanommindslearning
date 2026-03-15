@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hanominds Learning — 7-Day AI & Python Bootcamp for Kids</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --cyan: #00f5ff;
+    --violet: #7c3aed;
+    --indigo: #4f46e5;
+    --pink: #ec4899;
+    --glow-cyan: 0 0 40px rgba(0,245,255,0.35);
+    --glow-violet: 0 0 40px rgba(124,58,237,0.4);
+  }
+ 
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+  html { scroll-behavior: smooth; }
+ 
+  body {
+    background: #050714;
+    color: #e2e8f0;
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+  }
+ 
+  h1,h2,h3,h4,h5 { font-family: 'Syne', sans-serif; }
+ 
+  /* ── CANVAS PARTICLES ── */
+  #particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+ 
+  /* ── GLOBAL GRADIENT MESH ── */
+  .mesh {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 80% 60% at 10% 20%, rgba(79,70,229,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 90% 80%, rgba(0,245,255,0.12) 0%, transparent 55%),
+      radial-gradient(ellipse 50% 40% at 50% 50%, rgba(124,58,237,0.08) 0%, transparent 60%);
+  }
+ 
+  /* ── GLASS CARD ── */
+  .glass {
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+  }
+  .glass:hover {
+    background: rgba(255,255,255,0.07);
+    border-color: rgba(0,245,255,0.25);
+    box-shadow: var(--glow-cyan), 0 20px 60px rgba(0,0,0,0.4);
+    transform: translateY(-6px);
+  }
+ 
+  /* ── GLOW TEXT ── */
+  .glow-text {
+    background: linear-gradient(135deg, #fff 0%, #a5b4fc 40%, #00f5ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .glow-text-warm {
+    background: linear-gradient(135deg, #fbbf24 0%, #f472b6 60%, #a78bfa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+ 
+  /* ── BUTTONS ── */
+  .btn-primary {
+    position: relative; overflow: hidden;
+    background: linear-gradient(135deg, #4f46e5, #7c3aed, #0891b2);
+    background-size: 200% 200%;
+    animation: gradShift 4s ease infinite;
+    border: 0; border-radius: 50px;
+    padding: 16px 36px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 1rem;
+    color: #fff; cursor: pointer;
+    box-shadow: 0 0 30px rgba(79,70,229,0.5);
+    transition: box-shadow 0.3s, transform 0.2s;
+    letter-spacing: 0.02em;
+  }
+  .btn-primary::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: rgba(255,255,255,0);
+    transition: background 0.3s;
+  }
+  .btn-primary:hover {
+    box-shadow: 0 0 50px rgba(79,70,229,0.8), 0 0 100px rgba(0,245,255,0.3);
+    transform: translateY(-2px) scale(1.02);
+  }
+ 
+  .btn-ghost {
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 50px;
+    padding: 16px 36px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 600; font-size: 1rem;
+    color: #e2e8f0; cursor: pointer;
+    transition: all 0.3s;
+  }
+  .btn-ghost:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: rgba(0,245,255,0.4);
+    box-shadow: 0 0 25px rgba(0,245,255,0.2);
+    transform: translateY(-2px);
+  }
+ 
+  /* ── ANIMATIONS ── */
+  @keyframes gradShift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+ 
+  @keyframes float {
+    0%,100% { transform: translateY(0px) rotate(0deg); }
+    33%      { transform: translateY(-18px) rotate(2deg); }
+    66%      { transform: translateY(-8px) rotate(-1deg); }
+  }
+ 
+  @keyframes pulseGlow {
+    0%,100% { opacity: 0.6; }
+    50%      { opacity: 1; }
+  }
+ 
+  @keyframes spin-slow { to { transform: rotate(360deg); } }
+  @keyframes counter-spin { to { transform: rotate(-360deg); } }
+ 
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+ 
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+ 
+  @keyframes shimmer {
+    0%   { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+ 
+  @keyframes scanline {
+    0%   { transform: translateY(-100%); }
+    100% { transform: translateY(100vh); }
+  }
+ 
+  .animate-float { animation: float 6s ease-in-out infinite; }
+  .animate-float-delay { animation: float 8s ease-in-out 2s infinite; }
+  .animate-pulse-glow { animation: pulseGlow 3s ease-in-out infinite; }
+  .animate-slide-up { animation: slideUp 0.8s ease both; }
+  .animate-fade-in { animation: fadeIn 1.2s ease both; }
+ 
+  /* ── REVEAL ON SCROLL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(35px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+ 
+  /* ── HERO BADGE ── */
+  .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(0,245,255,0.08);
+    border: 1px solid rgba(0,245,255,0.25);
+    border-radius: 50px;
+    padding: 8px 18px;
+    font-size: 0.82rem; font-weight: 600;
+    color: var(--cyan);
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .badge-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--cyan);
+    animation: pulseGlow 1.5s ease-in-out infinite;
+  }
+ 
+  /* ── SECTION DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0,245,255,0.2), rgba(124,58,237,0.2), transparent);
+    margin: 0 auto;
+    max-width: 600px;
+  }
+ 
+  /* ── APP CARDS (real world) ── */
+  .app-card {
+    position: relative; overflow: hidden;
+    background: rgba(255,255,255,0.03);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 24px;
+    padding: 32px;
+    transition: all 0.45s cubic-bezier(0.4,0,0.2,1);
+    cursor: default;
+  }
+  .app-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 50% 120%, var(--card-color, rgba(79,70,229,0.15)) 0%, transparent 65%);
+    transition: opacity 0.4s;
+    opacity: 0;
+  }
+  .app-card:hover::before { opacity: 1; }
+  .app-card:hover {
+    border-color: var(--card-border, rgba(79,70,229,0.4));
+    box-shadow: 0 0 50px var(--card-shadow, rgba(79,70,229,0.2));
+    transform: translateY(-8px);
+  }
+  .app-bg-icon {
+    position: absolute;
+    right: -20px; bottom: -20px;
+    font-size: 9rem;
+    opacity: 0.06;
+    transition: opacity 0.4s, transform 0.4s;
+    pointer-events: none;
+    line-height: 1;
+  }
+  .app-card:hover .app-bg-icon { opacity: 0.12; transform: scale(1.1) rotate(-5deg); }
+ 
+  /* ── TIMELINE ── */
+  .timeline-item { position: relative; padding-left: 56px; }
+  .timeline-item::before {
+    content: '';
+    position: absolute; left: 19px; top: 40px; bottom: -40px;
+    width: 2px;
+    background: linear-gradient(to bottom, rgba(0,245,255,0.4), rgba(124,58,237,0.4));
+  }
+  .timeline-item:last-child::before { display: none; }
+  .timeline-dot {
+    position: absolute; left: 0; top: 24px;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    border: 2px solid;
+    transition: all 0.3s;
+  }
+ 
+  /* ── VIDEO SECTION ── */
+  .video-wrapper {
+    position: relative;
+    background: rgba(0,0,0,0.5);
+    border: 1px solid rgba(0,245,255,0.2);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 0 60px rgba(0,245,255,0.1), 0 0 120px rgba(124,58,237,0.1);
+    animation: pulseGlow 4s ease-in-out infinite;
+  }
+ 
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(5,7,20,0.7);
+    backdrop-filter: blur(30px);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    transition: all 0.3s;
+  }
+ 
+  /* ── STAT CARDS ── */
+  .stat-pill {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 50px;
+    padding: 10px 22px;
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'Syne', sans-serif;
+  }
+ 
+  /* ── SCANLINE ── */
+  .scanline-overlay {
+    position: fixed; inset: 0; pointer-events: none; z-index: 1;
+    background: repeating-linear-gradient(0deg,
+      rgba(0,0,0,0.03) 0px,
+      rgba(0,0,0,0.03) 1px,
+      transparent 1px,
+      transparent 4px);
+  }
+ 
+  /* ── NOISE TEXTURE OVERLAY ── */
+  .noise::after {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.4;
+    pointer-events: none;
+    border-radius: inherit;
+  }
+ 
+  /* Mobile menu */
+  #mobile-menu { display: none; }
+  #mobile-menu.open { display: block; }
+ 
+  /* Countdown */
+  .countdown-box {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(0,245,255,0.15);
+    border-radius: 12px;
+    padding: 12px 20px;
+    min-width: 70px;
+    text-align: center;
+  }
+ 
+  /* Progress bar */
+  .progress-bar {
+    height: 4px; border-radius: 2px;
+    background: linear-gradient(90deg, var(--cyan), var(--violet));
+    position: relative; overflow: hidden;
+  }
+  .progress-bar::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+    animation: shimmer 2s linear infinite;
+    background-size: 200% 100%;
+  }
+</style>
+</head>
+<body>
+ 
+<!-- Particles Canvas -->
+<canvas id="particles"></canvas>
+<!-- Mesh Background -->
+<div class="mesh"></div>
+<!-- Scanline -->
+<div class="scanline-overlay"></div>
+ 
+<!-- ─── NAV ─────────────────────────────────────────── -->
+<nav>
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <a href="#" class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl flex items-center justify-center text-lg"
+           style="background: linear-gradient(135deg,#4f46e5,#00f5ff); box-shadow: 0 0 20px rgba(0,245,255,0.3);">
+        🧠
+      </div>
+      <span style="font-family:'Syne',sans-serif; font-weight:800; font-size:1.1rem; letter-spacing:-0.02em;">
+        <span class="glow-text">Hano</span><span style="color:#e2e8f0;">minds</span>
+      </span>
+    </a>
+ 
+    <div class="hidden md:flex items-center gap-8">
+      <a href="#about" class="text-sm text-slate-400 hover:text-white transition-colors">About</a>
+      <a href="#curriculum" class="text-sm text-slate-400 hover:text-white transition-colors">Curriculum</a>
+      <a href="#realworld" class="text-sm text-slate-400 hover:text-white transition-colors">Projects</a>
+      <a href="#parents" class="text-sm text-slate-400 hover:text-white transition-colors">Parents</a>
+    </div>
+ 
+    <div class="hidden md:block">
+      <button class="btn-primary" style="padding:12px 28px; font-size:0.9rem;"
+              onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">
+        Reserve Seat ₹499
+      </button>
+    </div>
+ 
+    <button id="menu-btn" class="md:hidden text-slate-300 focus:outline-none" onclick="toggleMenu()">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+      </svg>
+    </button>
+  </div>
+ 
+  <div id="mobile-menu" class="md:hidden px-6 pb-4 space-y-3 border-t border-white/5 pt-4">
+    <a href="#about" class="block text-slate-400 hover:text-white py-2 text-sm" onclick="toggleMenu()">About</a>
+    <a href="#curriculum" class="block text-slate-400 hover:text-white py-2 text-sm" onclick="toggleMenu()">Curriculum</a>
+    <a href="#realworld" class="block text-slate-400 hover:text-white py-2 text-sm" onclick="toggleMenu()">Projects</a>
+    <a href="#parents" class="block text-slate-400 hover:text-white py-2 text-sm" onclick="toggleMenu()">Parents</a>
+    <button class="btn-primary w-full mt-2" style="font-size:0.9rem;"
+            onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'});toggleMenu()">
+      Reserve Seat ₹499
+    </button>
+  </div>
+</nav>
+ 
+ 
+<!-- ─── HERO ─────────────────────────────────────────── -->
+<section id="hero" class="relative min-h-screen flex flex-col items-center justify-center text-center px-6 pt-24 pb-16 overflow-hidden">
+ 
+  <!-- Orbital rings -->
+  <div class="absolute inset-0 flex items-center justify-center pointer-events-none select-none" style="z-index:1;">
+    <div style="width:600px;height:600px;border-radius:50%;border:1px solid rgba(0,245,255,0.08);position:absolute;animation:spin-slow 40s linear infinite;"></div>
+    <div style="width:420px;height:420px;border-radius:50%;border:1px dashed rgba(124,58,237,0.1);position:absolute;animation:counter-spin 30s linear infinite;"></div>
+    <div style="width:260px;height:260px;border-radius:50%;border:1px solid rgba(0,245,255,0.07);position:absolute;animation:spin-slow 20s linear infinite;"></div>
+  </div>
+ 
+  <!-- Hero glow orb -->
+  <div class="absolute pointer-events-none" style="
+    width:600px;height:600px;border-radius:50%;
+    background: radial-gradient(circle, rgba(79,70,229,0.2) 0%, rgba(0,245,255,0.08) 40%, transparent 70%);
+    top:50%;left:50%;transform:translate(-50%,-50%);
+    filter:blur(40px); z-index:1;
+    animation: pulseGlow 5s ease-in-out infinite;
+  "></div>
+ 
+  <div class="relative z-10 max-w-5xl mx-auto">
+    <!-- Badge -->
+    <div class="badge animate-slide-up mb-8 inline-flex">
+      <span class="badge-dot"></span>
+      🚀 Next Batch Starts Soon — Limited Seats
+    </div>
+ 
+    <!-- Headline -->
+    <h1 class="glow-text animate-slide-up font-extrabold leading-tight mb-6"
+        style="font-size:clamp(2.4rem,6vw,5rem); animation-delay:0.1s; letter-spacing:-0.03em;">
+      Your Child Uses Technology.<br/>Now Let Them <em style="-webkit-text-fill-color:unset; font-style:normal; color:#00f5ff; filter: drop-shadow(0 0 20px rgba(0,245,255,0.6));">Build</em> It.
+    </h1>
+ 
+    <!-- Sub -->
+    <p class="animate-slide-up text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed"
+       style="font-size:clamp(1rem,2vw,1.25rem); animation-delay:0.2s;">
+      A <strong class="text-white">7-Day AI &amp; Python Bootcamp</strong> designed to transform kids
+      from technology users into future creators and innovators.
+    </p>
+ 
+    <!-- Stats -->
+    <div class="animate-slide-up flex flex-wrap gap-3 justify-center mb-10" style="animation-delay:0.3s;">
+      <div class="stat-pill text-sm"><span>🎯</span><span class="text-slate-300">Ages <strong class="text-white">10–16</strong></span></div>
+      <div class="stat-pill text-sm"><span>📅</span><span class="text-slate-300"><strong class="text-white">7 Days</strong> Intensive</span></div>
+      <div class="stat-pill text-sm"><span>💻</span><span class="text-slate-300"><strong class="text-white">Live</strong> Sessions</span></div>
+      <div class="stat-pill text-sm"><span>🏆</span><span class="text-slate-300"><strong class="text-white">Certificate</strong> Included</span></div>
+    </div>
+ 
+    <!-- CTAs -->
+    <div class="animate-slide-up flex flex-col sm:flex-row gap-4 justify-center" style="animation-delay:0.4s;">
+      <button class="btn-primary" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">
+        🚀 Join Bootcamp — ₹499
+      </button>
+      <button class="btn-ghost" onclick="document.getElementById('parents').scrollIntoView({behavior:'smooth'})">
+        ▶ Watch Parent Video
+      </button>
+    </div>
+ 
+    <!-- Scroll indicator -->
+    <div class="mt-16 flex flex-col items-center gap-2 animate-float opacity-40">
+      <span class="text-xs text-slate-500 tracking-widest uppercase">Scroll to explore</span>
+      <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+      </svg>
+    </div>
+  </div>
+ 
+  <!-- Floating tech words -->
+  <div class="absolute pointer-events-none z-10 hidden lg:block" style="top:20%;left:5%;animation:float 7s ease-in-out infinite;">
+    <div style="font-family:'Syne',sans-serif; font-size:0.75rem; color:rgba(0,245,255,0.3); letter-spacing:0.1em;">print("Hello World")</div>
+  </div>
+  <div class="absolute pointer-events-none z-10 hidden lg:block" style="top:30%;right:5%;animation:float 9s ease-in-out 1s infinite;">
+    <div style="font-family:'Syne',sans-serif; font-size:0.75rem; color:rgba(124,58,237,0.3); letter-spacing:0.1em;">import AI</div>
+  </div>
+  <div class="absolute pointer-events-none z-10 hidden lg:block" style="bottom:25%;left:8%;animation:float 11s ease-in-out 2s infinite;">
+    <div style="font-family:'Syne',sans-serif; font-size:0.75rem; color:rgba(236,72,153,0.3); letter-spacing:0.1em;">def build_future():</div>
+  </div>
+  <div class="absolute pointer-events-none z-10 hidden lg:block" style="bottom:30%;right:8%;animation:float 8s ease-in-out 3s infinite;">
+    <div style="font-family:'Syne',sans-serif; font-size:0.75rem; color:rgba(0,245,255,0.25); letter-spacing:0.1em;">model.train()</div>
+  </div>
+</section>
+ 
+ 
+<!-- ─── DIVIDER ──────────────────────────────────────── -->
+<div class="divider mx-6 md:mx-auto my-2"></div>
+ 
+ 
+<!-- ─── PROBLEM SECTION ──────────────────────────────── -->
+<section id="about" class="relative z-10 py-24 px-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <div class="badge inline-flex mb-5">⚡ The Opportunity</div>
+      <h2 class="glow-text-warm text-4xl md:text-5xl font-extrabold mb-5 leading-tight">
+        Why Kids Must Learn AI Today
+      </h2>
+      <p class="text-slate-400 max-w-xl mx-auto text-lg leading-relaxed">
+        The world is changing faster than any school curriculum can keep up with.
+        Your child deserves a head start.
+      </p>
+    </div>
+ 
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+ 
+      <!-- Card 1 -->
+      <div class="glass p-8 reveal reveal-delay-1 group">
+        <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-6 transition-transform group-hover:scale-110"
+             style="background: linear-gradient(135deg, rgba(79,70,229,0.3), rgba(0,245,255,0.15)); border: 1px solid rgba(0,245,255,0.2);">
+          🧠
+        </div>
+        <h3 class="text-xl font-bold text-white mb-3">Critical Thinking</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">
+          Coding teaches children to break down big problems into small, solvable steps —
+          a skill that applies to every subject and career for life.
+        </p>
+        <div class="mt-6 progress-bar" style="width:80%"></div>
+        <div class="mt-2 text-xs text-slate-500">80% of future jobs require logic skills</div>
+      </div>
+ 
+      <!-- Card 2 -->
+      <div class="glass p-8 reveal reveal-delay-2 group">
+        <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-6 transition-transform group-hover:scale-110"
+             style="background: linear-gradient(135deg, rgba(124,58,237,0.3), rgba(236,72,153,0.15)); border: 1px solid rgba(124,58,237,0.25);">
+          🚀
+        </div>
+        <h3 class="text-xl font-bold text-white mb-3">Future Careers</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">
+          AI and tech roles are the fastest-growing and highest-paying careers.
+          Learning Python at 12 is like learning English at 3 — it compounds for life.
+        </p>
+        <div class="mt-6 progress-bar" style="width:95%; background: linear-gradient(90deg, #7c3aed, #ec4899);"></div>
+        <div class="mt-2 text-xs text-slate-500">95% of top salaries tied to tech skills</div>
+      </div>
+ 
+      <!-- Card 3 -->
+      <div class="glass p-8 reveal reveal-delay-3 group">
+        <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-6 transition-transform group-hover:scale-110"
+             style="background: linear-gradient(135deg, rgba(0,245,255,0.2), rgba(79,70,229,0.2)); border: 1px solid rgba(0,245,255,0.2);">
+          🤖
+        </div>
+        <h3 class="text-xl font-bold text-white mb-3">Creator Mindset</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">
+          Instead of just scrolling and clicking, your child will understand how apps work —
+          and build their own ideas into reality.
+        </p>
+        <div class="mt-6 progress-bar" style="width:70%; background: linear-gradient(90deg, #00f5ff, #4f46e5);"></div>
+        <div class="mt-2 text-xs text-slate-500">Build real projects in 7 days</div>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+ 
+<!-- ─── DIVIDER ──────────────────────────────────────── -->
+<div class="divider mx-6 md:mx-auto my-2"></div>
+ 
+ 
+<!-- ─── REAL WORLD EXAMPLES ──────────────────────────── -->
+<section id="realworld" class="relative z-10 py-24 px-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <div class="badge inline-flex mb-5">💡 Real World Connections</div>
+      <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-5 leading-tight">
+        The Apps They <span class="glow-text">Love</span> Run on<br/>Code They Can <span style="color:#00f5ff;">Write</span>
+      </h2>
+      <p class="text-slate-400 max-w-xl mx-auto text-lg">
+        We show kids how everything they use daily is built with the skills they'll learn in this bootcamp.
+      </p>
+    </div>
+ 
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+ 
+      <!-- Free Fire -->
+      <div class="app-card reveal reveal-delay-1" style="--card-color: rgba(239,68,68,0.15); --card-border: rgba(239,68,68,0.4); --card-shadow: rgba(239,68,68,0.2);">
+        <div class="app-bg-icon">🎮</div>
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl mb-5"
+             style="background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3);">
+          🔥
+        </div>
+        <h3 class="font-bold text-white text-lg mb-3">Free Fire</h3>
+        <div class="inline-block text-xs px-3 py-1 rounded-full mb-3"
+             style="background: rgba(239,68,68,0.15); color: #fca5a5; border: 1px solid rgba(239,68,68,0.2);">
+          Game Logic + AI
+        </div>
+        <p class="text-slate-400 text-sm leading-relaxed">
+          AI enemies that dodge, aim, and react? That's Python logic — if/else conditions, pathfinding algorithms, and game loops running thousands of times per second.
+        </p>
+      </div>
+ 
+      <!-- E-commerce -->
+      <div class="app-card reveal reveal-delay-2" style="--card-color: rgba(251,146,60,0.15); --card-border: rgba(251,146,60,0.4); --card-shadow: rgba(251,146,60,0.2);">
+        <div class="app-bg-icon">🛒</div>
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl mb-5"
+             style="background: rgba(251,146,60,0.15); border: 1px solid rgba(251,146,60,0.3);">
+          📦
+        </div>
+        <h3 class="font-bold text-white text-lg mb-3">Flipkart / Amazon</h3>
+        <div class="inline-block text-xs px-3 py-1 rounded-full mb-3"
+             style="background: rgba(251,146,60,0.15); color: #fed7aa; border: 1px solid rgba(251,146,60,0.2);">
+          Systems + Data
+        </div>
+        <p class="text-slate-400 text-sm leading-relaxed">
+          Order tracking, delivery routes, and price suggestions? All driven by Python scripts, databases, and smart sorting algorithms kids will actually build.
+        </p>
+      </div>
+ 
+      <!-- Netflix -->
+      <div class="app-card reveal reveal-delay-3" style="--card-color: rgba(220,38,38,0.15); --card-border: rgba(220,38,38,0.4); --card-shadow: rgba(220,38,38,0.2);">
+        <div class="app-bg-icon">🎬</div>
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl mb-5"
+             style="background: rgba(220,38,38,0.15); border: 1px solid rgba(220,38,38,0.3);">
+          📺
+        </div>
+        <h3 class="font-bold text-white text-lg mb-3">Netflix</h3>
+        <div class="inline-block text-xs px-3 py-1 rounded-full mb-3"
+             style="background: rgba(220,38,38,0.15); color: #fca5a5; border: 1px solid rgba(220,38,38,0.2);">
+          Recommendation AI
+        </div>
+        <p class="text-slate-400 text-sm leading-relaxed">
+          "Because you watched…" is an AI recommendation engine. Kids learn how data + machine learning decides what millions of people watch next.
+        </p>
+      </div>
+ 
+      <!-- AI -->
+      <div class="app-card reveal reveal-delay-4" style="--card-color: rgba(0,245,255,0.12); --card-border: rgba(0,245,255,0.35); --card-shadow: rgba(0,245,255,0.15);">
+        <div class="app-bg-icon">✨</div>
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl mb-5"
+             style="background: rgba(0,245,255,0.1); border: 1px solid rgba(0,245,255,0.25);">
+          🤖
+        </div>
+        <h3 class="font-bold text-white text-lg mb-3">Artificial Intelligence</h3>
+        <div class="inline-block text-xs px-3 py-1 rounded-full mb-3"
+             style="background: rgba(0,245,255,0.08); color: #67e8f9; border: 1px solid rgba(0,245,255,0.2);">
+          AI Creation
+        </div>
+        <p class="text-slate-400 text-sm leading-relaxed">
+          Image generators, smart assistants, and AI videos — all Python. Kids build their own mini AI project and understand how ChatGPT-style models actually work.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+ 
+<!-- ─── DIVIDER ──────────────────────────────────────── -->
+<div class="divider mx-6 md:mx-auto my-2"></div>
+ 
+ 
+<!-- ─── CURRICULUM / TIMELINE ───────────────────────── -->
+<section id="curriculum" class="relative z-10 py-24 px-6">
+  <div class="max-w-4xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <div class="badge inline-flex mb-5">📚 Learning Path</div>
+      <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-5 leading-tight">
+        7 Days. Real Skills.<br/><span class="glow-text">Real Projects.</span>
+      </h2>
+      <p class="text-slate-400 max-w-xl mx-auto text-lg">
+        A carefully structured journey from zero to building an actual AI project.
+      </p>
+    </div>
+ 
+    <div class="space-y-8">
+ 
+      <!-- Day 1-2 -->
+      <div class="timeline-item reveal reveal-delay-1">
+        <div class="timeline-dot" style="background:rgba(0,245,255,0.1);border-color:rgba(0,245,255,0.5);color:#00f5ff;">
+          🐍
+        </div>
+        <div class="glass p-7 ml-4 group hover:border-cyan-500/30">
+          <div class="flex flex-wrap items-center gap-3 mb-4">
+            <span class="text-xs font-bold px-3 py-1 rounded-full"
+                  style="background:rgba(0,245,255,0.1);color:#00f5ff;border:1px solid rgba(0,245,255,0.25);">
+              Day 1 — 2
+            </span>
+            <span class="text-xs text-slate-500">Foundation Phase</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3">Python Fundamentals</h3>
+          <p class="text-slate-400 text-sm leading-relaxed mb-4">
+            Zero to coding in 48 hours. Variables, loops, functions, and logic. 
+            Every concept is taught through games and fun challenges — no boring textbooks.
+          </p>
+          <div class="flex flex-wrap gap-2">
+            <span class="text-xs px-3 py-1.5 rounded-lg" style="background:rgba(255,255,255,0.05);color:#94a3b8;border:1px solid rgba(255,255,255,0.08);">Variables & Data Types</span>
+            <span class="text-xs px-3 py-1.5 rounded-lg" style="background:rgba(255,255,255,0.05);color:#94a3b8;border:1px solid rgba(255,255,255,0.08);">Loops & Conditions</span>
+            <span class="text-xs px-3 py-1.5 rounded-lg" style="background:rgba(255,255,255,0.05);color:#94a3b8;border:1px solid rgba(255,255,255,0.08);">Functions</span>
+            <span class="text-xs px-3 py-1.5 rounded-lg" style="background:rgba(255,255,255,0.05);color:#94a3b8;border:1px solid rgba(255,255,255,0.08);">Mini Quiz Game</span>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- Day 3-5 -->
+      <div class="timeline-item reveal reveal-delay-2">
+        <div class="timeline-dot" style="background:rgba(124,58,237,0.15);border-color:rgba(124,58,237,0.6);color:#a78bfa;">
+          ⚙️
+        </div>
+        <div class="glass p-7 ml-4">
+          <div class="flex flex-wrap items-center gap-3 mb-4">
+            <span class="text-xs font-bold px-3 py-1 rounded-full"
+                  style="background:rgba(124,58,237,0.15);color:#a78bfa;border:1px solid rgba(124,58,237,0.3);">
+              Day 3 — 5
+            </span>
+            <span class="text-xs text-slate-500">Builder Phase</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3">Build Mini Apps & Logic</h3>
+          <p class="text-slate-400 text-sm leading-relaxed mb-4">
+            Apply everything learned to build real, working mini-applications. 
+            A calculator, a word guessing game, a number prediction app — 
+            kids see their code come alive on screen.
+          </p>
+          <div class="flex flex-wrap gap-2">
+            <span class="text-xs px-3 py-1.5 rounded-lg" style="background:rgba(255,255,255,0.05);color:#94a3b8;border:1px solid rgba(255,255,255,0.08);">Calculator App</span>
+            <span class="text-xs px-3 py-1.5 rounded-lg" style="background:rgba(255,255,255,0.05);color:#94a3b8;border:1px solid rgba(255,255,255,0.08);">Word Guess Game</span>
+            <span class="text-xs px-3 py-1.5 rounded-lg" style="background:rgba(255,255,255,0.05);color:#94a3b8;border:1px solid rgba(255,255,255,0.08);">Data Handling</span>
+            <span class="text-xs px-3 py-1.5 rounded-lg" style="background:rgba(255,255,255,0.05);color:#94a3b8;border:1px solid rgba(255,255,255,0.08);">API Basics</span>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- Day 6-7 -->
+      <div class="timeline-item reveal reveal-delay-3">
+        <div class="timeline-dot" style="background:rgba(236,72,153,0.15);border-color:rgba(236,72,153,0.6);color:#f472b6;">
+          🏆
+        </div>
+        <div class="glass p-7 ml-4" style="border-color:rgba(236,72,153,0.15);">
+          <div class="flex flex-wrap items-center gap-3 mb-4">
+            <span class="text-xs font-bold px-3 py-1 rounded-full"
+                  style="background:rgba(236,72,153,0.15);color:#f472b6;border:1px solid rgba(236,72,153,0.3);">
+              Day 6 — 7
+            </span>
+            <span class="text-xs text-slate-500">Final Project Phase</span>
+            <span class="text-xs px-3 py-1 rounded-full text-yellow-300"
+                  style="background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.25);">
+              ⭐ Capstone
+            </span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3">Create a Final AI Project</h3>
+          <p class="text-slate-400 text-sm leading-relaxed mb-4">
+            The grand finale. Each student builds and presents their own AI-powered project — 
+            a smart chatbot, image classifier, or recommendation engine. 
+            Certificate awarded + parents invited to demo day!
+          </p>
+          <div class="flex flex-wrap gap-2">
+            <span class="text-xs px-3 py-1.5 rounded-lg" style="background:rgba(255,255,255,0.05);color:#94a3b8;border:1px solid rgba(255,255,255,0.08);">AI Chatbot</span>
+            <span class="text-xs px-3 py-1.5 rounded-lg" style="background:rgba(255,255,255,0.05);color:#94a3b8;border:1px solid rgba(255,255,255,0.08);">Image Classifier</span>
+            <span class="text-xs px-3 py-1.5 rounded-lg" style="background:rgba(255,255,255,0.05);color:#94a3b8;border:1px solid rgba(255,255,255,0.08);">Demo Day</span>
+            <span class="text-xs px-3 py-1.5 rounded-lg" style="background:rgba(255,255,255,0.05);color:#94a3b8;border:1px solid rgba(255,255,255,0.08);">Certificate 🏅</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+ 
+<!-- ─── DIVIDER ──────────────────────────────────────── -->
+<div class="divider mx-6 md:mx-auto my-2"></div>
+ 
+ 
+<!-- ─── SOCIAL PROOF / TRUST STRIP ───────────────────── -->
+<section class="relative z-10 py-16 px-6">
+  <div class="max-w-5xl mx-auto">
+    <p class="text-center text-xs text-slate-600 uppercase tracking-widest mb-8 reveal">Trusted by Parents Across India</p>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 reveal">
+      <div class="text-center">
+        <div class="text-3xl font-extrabold glow-text mb-1" style="font-family:'Syne',sans-serif;">500+</div>
+        <div class="text-xs text-slate-500">Kids Trained</div>
+      </div>
+      <div class="text-center">
+        <div class="text-3xl font-extrabold mb-1" style="font-family:'Syne',sans-serif; color:#a78bfa;">98%</div>
+        <div class="text-xs text-slate-500">Parent Satisfaction</div>
+      </div>
+      <div class="text-center">
+        <div class="text-3xl font-extrabold mb-1" style="font-family:'Syne',sans-serif; color:#f472b6;">7</div>
+        <div class="text-xs text-slate-500">Days to First Project</div>
+      </div>
+      <div class="text-center">
+        <div class="text-3xl font-extrabold mb-1" style="font-family:'Syne',sans-serif; color:#00f5ff;">4.9★</div>
+        <div class="text-xs text-slate-500">Average Rating</div>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+ 
+<!-- ─── DIVIDER ──────────────────────────────────────── -->
+<div class="divider mx-6 md:mx-auto my-2"></div>
+ 
+ 
+<!-- ─── PARENT VIDEO ─────────────────────────────────── -->
+<section id="parents" class="relative z-10 py-24 px-6">
+  <div class="max-w-4xl mx-auto text-center">
+    <div class="reveal">
+      <div class="badge inline-flex mb-5">💌 For Parents</div>
+      <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-4 leading-tight">
+        A Message <span class="glow-text">For Parents</span>
+      </h2>
+      <p class="text-slate-400 max-w-xl mx-auto mb-12 text-lg">
+        Wondering if this is right for your child? Our founder explains everything in under 3 minutes.
+      </p>
+    </div>
+ 
+    <div class="video-wrapper reveal" style="max-width:720px; margin:0 auto;">
+      <!-- Video embed placeholder -->
+      <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden;">
+        <iframe
+          style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"
+          src="https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0&modestbranding=1&color=white"
+          title="Hanominds Learning — Parent Message"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+ 
+    <p class="mt-6 text-xs text-slate-600 italic">(Replace with your actual YouTube video URL)</p>
+  </div>
+</section>
+ 
+ 
+<!-- ─── TESTIMONIALS ─────────────────────────────────── -->
+<section class="relative z-10 py-16 px-6">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-12 reveal">
+      <h2 class="text-2xl md:text-3xl font-extrabold text-white">What Parents &amp; Kids Say</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div class="glass p-6 reveal reveal-delay-1">
+        <div class="flex gap-1 mb-4 text-yellow-400 text-sm">★★★★★</div>
+        <p class="text-slate-300 text-sm leading-relaxed mb-5 italic">
+          "My 12-year-old built a chatbot in 7 days. He now wants to become an AI engineer. 
+          Best ₹499 I've ever spent on his education."
+        </p>
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold"
+               style="background: linear-gradient(135deg, #4f46e5, #00f5ff);">A</div>
+          <div>
+            <div class="text-white text-sm font-semibold">Anjali Sharma</div>
+            <div class="text-slate-500 text-xs">Parent · Hyderabad</div>
+          </div>
+        </div>
+      </div>
+ 
+      <div class="glass p-6 reveal reveal-delay-2">
+        <div class="flex gap-1 mb-4 text-yellow-400 text-sm">★★★★★</div>
+        <p class="text-slate-300 text-sm leading-relaxed mb-5 italic">
+          "I thought coding was boring. But Hanominds made it fun — we built games and AI projects.
+          I want to do another batch already!"
+        </p>
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold"
+               style="background: linear-gradient(135deg, #7c3aed, #ec4899);">R</div>
+          <div>
+            <div class="text-white text-sm font-semibold">Rohan, Age 14</div>
+            <div class="text-slate-500 text-xs">Student · Pune</div>
+          </div>
+        </div>
+      </div>
+ 
+      <div class="glass p-6 reveal reveal-delay-3">
+        <div class="flex gap-1 mb-4 text-yellow-400 text-sm">★★★★★</div>
+        <p class="text-slate-300 text-sm leading-relaxed mb-5 italic">
+          "The instructors are incredibly patient and the curriculum is designed brilliantly.
+          My daughter gained more confidence in 7 days than in an entire school year."
+        </p>
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold"
+               style="background: linear-gradient(135deg, #ec4899, #f59e0b);">P</div>
+          <div>
+            <div class="text-white text-sm font-semibold">Priya Reddy</div>
+            <div class="text-slate-500 text-xs">Parent · Bangalore</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+ 
+<!-- ─── DIVIDER ──────────────────────────────────────── -->
+<div class="divider mx-6 md:mx-auto my-2"></div>
+ 
+ 
+<!-- ─── FINAL CTA ────────────────────────────────────── -->
+<section id="cta" class="relative z-10 py-28 px-6 overflow-hidden">
+  <!-- CTA Background -->
+  <div class="absolute inset-0 pointer-events-none" style="
+    background: radial-gradient(ellipse 70% 60% at 50% 50%,
+      rgba(79,70,229,0.25) 0%,
+      rgba(0,245,255,0.08) 50%,
+      transparent 100%);
+    filter: blur(2px);
+  "></div>
+ 
+  <!-- Glow line top -->
+  <div class="absolute top-0 left-0 right-0 h-px"
+       style="background:linear-gradient(90deg,transparent,rgba(0,245,255,0.4),rgba(124,58,237,0.4),transparent);">
+  </div>
+ 
+  <div class="max-w-3xl mx-auto text-center relative">
+    <div class="reveal">
+      <div class="badge inline-flex mb-8">🎯 Limited Seats Available</div>
+ 
+      <h2 class="text-4xl md:text-6xl font-extrabold text-white mb-6 leading-tight reveal"
+          style="letter-spacing:-0.03em;">
+        Give Your Child<br/>The Skill Of The <span class="glow-text">Future</span>
+      </h2>
+ 
+      <p class="text-slate-400 text-xl mb-4 reveal" style="animation-delay:0.1s;">
+        This batch has <strong class="text-white">limited seats</strong>. 
+        Once it's full, registration closes.
+      </p>
+ 
+      <!-- Pricing -->
+      <div class="inline-block glass p-6 mb-8 reveal" style="animation-delay:0.2s; min-width:280px;">
+        <div class="text-slate-400 text-sm mb-1 line-through">Regular Price: ₹1,999</div>
+        <div class="text-5xl font-extrabold glow-text-warm mb-1" style="font-family:'Syne',sans-serif;">₹499</div>
+        <div class="text-slate-400 text-sm">One-time · All inclusive · Certificate included</div>
+        <div class="mt-4 flex flex-wrap gap-2 justify-center text-xs text-slate-400">
+          <span>✅ Live Sessions</span>
+          <span>✅ Recorded Access</span>
+          <span>✅ Personal Projects</span>
+          <span>✅ Certificate</span>
+          <span>✅ Parent Updates</span>
+        </div>
+      </div>
+ 
+      <!-- CTA Button -->
+      <div class="reveal" style="animation-delay:0.3s;">
+        <button class="btn-primary text-xl" style="padding:20px 52px;"
+                onclick="alert('Registration form coming soon! Contact us at info@hanominds.com')">
+          🚀 Reserve Seat — ₹499
+        </button>
+        <p class="mt-5 text-slate-500 text-sm">
+          🔒 Secure payment · 100% refund if not satisfied after Day 1
+        </p>
+      </div>
+ 
+      <!-- Urgency counter -->
+      <div class="mt-8 flex justify-center gap-4 reveal" style="animation-delay:0.4s;">
+        <div class="countdown-box">
+          <div id="d" class="text-2xl font-extrabold glow-text" style="font-family:'Syne',sans-serif;">--</div>
+          <div class="text-xs text-slate-500 mt-1">Days</div>
+        </div>
+        <div class="countdown-box">
+          <div id="h" class="text-2xl font-extrabold glow-text" style="font-family:'Syne',sans-serif;">--</div>
+          <div class="text-xs text-slate-500 mt-1">Hours</div>
+        </div>
+        <div class="countdown-box">
+          <div id="m" class="text-2xl font-extrabold glow-text" style="font-family:'Syne',sans-serif;">--</div>
+          <div class="text-xs text-slate-500 mt-1">Mins</div>
+        </div>
+        <div class="countdown-box">
+          <div id="s" class="text-2xl font-extrabold glow-text" style="font-family:'Syne',sans-serif;">--</div>
+          <div class="text-xs text-slate-500 mt-1">Secs</div>
+        </div>
+      </div>
+      <p class="mt-3 text-xs text-slate-600">Until registration closes</p>
+    </div>
+  </div>
+ 
+  <!-- Glow line bottom -->
+  <div class="absolute bottom-0 left-0 right-0 h-px"
+       style="background:linear-gradient(90deg,transparent,rgba(124,58,237,0.4),rgba(0,245,255,0.3),transparent);">
+  </div>
+</section>
+ 
+ 
+<!-- ─── FOOTER ───────────────────────────────────────── -->
+<footer class="relative z-10 py-16 px-6 border-t border-white/5">
+  <div class="max-w-6xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
+      <!-- Brand -->
+      <div>
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-9 h-9 rounded-xl flex items-center justify-center text-lg"
+               style="background: linear-gradient(135deg,#4f46e5,#00f5ff); box-shadow: 0 0 15px rgba(0,245,255,0.25);">
+            🧠
+          </div>
+          <span style="font-family:'Syne',sans-serif; font-weight:800; font-size:1.1rem;">
+            <span class="glow-text">Hano</span><span style="color:#e2e8f0;">minds</span>
+          </span>
+        </div>
+        <p class="text-slate-500 text-sm leading-relaxed">Building Future Innovators</p>
+        <p class="text-slate-600 text-xs mt-3 leading-relaxed">
+          Empowering the next generation with AI and coding skills that matter.
+        </p>
+      </div>
+ 
+      <!-- Links -->
+      <div>
+        <h4 class="text-white font-semibold mb-4 text-sm tracking-widest uppercase">Quick Links</h4>
+        <ul class="space-y-2">
+          <li><a href="#about" class="text-slate-500 text-sm hover:text-white transition-colors">About the Bootcamp</a></li>
+          <li><a href="#curriculum" class="text-slate-500 text-sm hover:text-white transition-colors">Curriculum</a></li>
+          <li><a href="#realworld" class="text-slate-500 text-sm hover:text-white transition-colors">Real World Projects</a></li>
+          <li><a href="#parents" class="text-slate-500 text-sm hover:text-white transition-colors">For Parents</a></li>
+          <li><a href="#cta" class="text-slate-500 text-sm hover:text-white transition-colors">Enroll Now</a></li>
+        </ul>
+      </div>
+ 
+      <!-- Contact -->
+      <div>
+        <h4 class="text-white font-semibold mb-4 text-sm tracking-widest uppercase">Contact</h4>
+        <ul class="space-y-3">
+          <li class="flex items-center gap-2 text-slate-500 text-sm">
+            <span>📧</span> info@hanominds.com
+          </li>
+          <li class="flex items-center gap-2 text-slate-500 text-sm">
+            <span>📱</span> +91 99999 00000
+          </li>
+          <li class="flex items-center gap-2 text-slate-500 text-sm">
+            <span>🌍</span> Online · Pan India
+          </li>
+        </ul>
+        <div class="flex gap-3 mt-5">
+          <a href="#" class="w-9 h-9 rounded-xl flex items-center justify-center text-sm transition-all hover:scale-110"
+             style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);">📘</a>
+          <a href="#" class="w-9 h-9 rounded-xl flex items-center justify-center text-sm transition-all hover:scale-110"
+             style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);">📸</a>
+          <a href="#" class="w-9 h-9 rounded-xl flex items-center justify-center text-sm transition-all hover:scale-110"
+             style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);">▶️</a>
+          <a href="#" class="w-9 h-9 rounded-xl flex items-center justify-center text-sm transition-all hover:scale-110"
+             style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);">💬</a>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+      <p class="text-slate-600 text-xs">
+        © 2024 Hanominds Learning. All rights reserved. Building Future Innovators 🚀
+      </p>
+      <div class="flex gap-6">
+        <a href="#" class="text-slate-600 text-xs hover:text-slate-400 transition-colors">Privacy Policy</a>
+        <a href="#" class="text-slate-600 text-xs hover:text-slate-400 transition-colors">Terms of Service</a>
+        <a href="#" class="text-slate-600 text-xs hover:text-slate-400 transition-colors">Refund Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+ 
+ 
+<!-- ─── SCRIPTS ──────────────────────────────────────── -->
+<script>
+  // ── PARTICLES ──────────────────────────────────────────
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+ 
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', () => { resize(); initParticles(); });
+ 
+  class Particle {
+    constructor() { this.reset(); }
+    reset() {
+      this.x = Math.random() * W;
+      this.y = Math.random() * H;
+      this.vx = (Math.random() - 0.5) * 0.4;
+      this.vy = (Math.random() - 0.5) * 0.4;
+      this.size = Math.random() * 1.8 + 0.4;
+      this.alpha = Math.random() * 0.5 + 0.1;
+      const hues = ['0,245,255', '124,58,237', '79,70,229', '236,72,153', '255,255,255'];
+      this.color = hues[Math.floor(Math.random() * hues.length)];
+      this.life = Math.random() * 400 + 200;
+      this.age = 0;
+    }
+    update() {
+      this.x += this.vx; this.y += this.vy; this.age++;
+      if (this.x < 0 || this.x > W || this.y < 0 || this.y > H || this.age > this.life) this.reset();
+    }
+    draw() {
+      const fade = Math.min(1, Math.min(this.age / 40, (this.life - this.age) / 40));
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${this.color}, ${this.alpha * fade})`;
+      ctx.fill();
+    }
+  }
+ 
+  function initParticles() {
+    particles = [];
+    const count = Math.min(160, Math.floor((W * H) / 8000));
+    for (let i = 0; i < count; i++) particles.push(new Particle());
+  }
+  initParticles();
+ 
+  // Connect nearby particles
+  function drawConnections() {
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 120) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(0,245,255,${0.06 * (1 - dist / 120)})`;
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      }
+    }
+  }
+ 
+  function animateParticles() {
+    ctx.clearRect(0, 0, W, H);
+    drawConnections();
+    particles.forEach(p => { p.update(); p.draw(); });
+    requestAnimationFrame(animateParticles);
+  }
+  animateParticles();
+ 
+ 
+  // ── SCROLL REVEAL ─────────────────────────────────────
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => observer.observe(el));
+ 
+ 
+  // ── MOBILE MENU ────────────────────────────────────────
+  function toggleMenu() {
+    const menu = document.getElementById('mobile-menu');
+    menu.classList.toggle('open');
+  }
+ 
+ 
+  // ── COUNTDOWN ─────────────────────────────────────────
+  function updateCountdown() {
+    // Set a target date 7 days from now
+    const stored = sessionStorage.getItem('hano_target');
+    let target;
+    if (stored) {
+      target = new Date(parseInt(stored));
+    } else {
+      target = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+      sessionStorage.setItem('hano_target', target.getTime());
+    }
+ 
+    const now = new Date();
+    const diff = target - now;
+    if (diff <= 0) { return; }
+ 
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+ 
+    document.getElementById('d').textContent = String(d).padStart(2, '0');
+    document.getElementById('h').textContent = String(h).padStart(2, '0');
+    document.getElementById('m').textContent = String(m).padStart(2, '0');
+    document.getElementById('s').textContent = String(s).padStart(2, '0');
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+ 
+ 
+  // ── NAV SCROLL EFFECT ─────────────────────────────────
+  window.addEventListener('scroll', () => {
+    const nav = document.querySelector('nav');
+    if (window.scrollY > 60) {
+      nav.style.background = 'rgba(5,7,20,0.92)';
+      nav.style.boxShadow = '0 4px 30px rgba(0,0,0,0.4)';
+    } else {
+      nav.style.background = 'rgba(5,7,20,0.7)';
+      nav.style.boxShadow = 'none';
+    }
+  });
+</script>
+ 
+</body>
+</html>
